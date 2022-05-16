@@ -7,8 +7,6 @@ import * as Yup from 'yup';
 import InputField from './InputField';
 
 const Register = () => {
-	const [isLoading, setLoading] = useState(false);
-
 	useEffect(() => {
 		document.title = 'Register Form';
 	});
@@ -48,12 +46,11 @@ const Register = () => {
 					onSubmit={(values, { setSubmitting }) => {
 						setTimeout(() => {
 							alert(JSON.stringify(values, null, 2));
-							setLoading(true);
 							setSubmitting(false);
 						}, 400);
 					}}
 				>
-					<Form className="border p-4 rounded border-3">
+					<Form className="border p-5 rounded border-3">
 						<div className="card-body p-2 text-center">
 							<h3 className="mb-1">Register Form</h3>
 						</div>
@@ -81,7 +78,7 @@ const Register = () => {
 								className="form-control"
 							/>
 						</BootstrapForm.Group>
-						<Button variant="primary" type="submit" disabled={isLoading}>
+						<Button variant="primary" type="submit">
 							Register
 						</Button>
 					</Form>
