@@ -8,7 +8,7 @@ const Header = () => {
 	return (
 		<Navbar bg="dark" variant="dark">
 			<Container fluid className="">
-				<Navbar.Brand href="/">Generic Blog</Navbar.Brand>
+				<Navbar.Brand href="/">Generic Message Board</Navbar.Brand>
 				<Nav className="me-auto">
 					<Nav.Link href="/">Home</Nav.Link>
 				</Nav>
