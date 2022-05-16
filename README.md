@@ -6,4 +6,6 @@ https://www.theodinproject.com/lessons/nodejs-blog-api
 
 ## Technologies
 
-HTML, React-Bootstrap, React, Formik (form valiidation), Yup (schema validation)
+HTML, React-Bootstrap, React, Formik (form valiidation), Yup (schema validation), SlateJS(rich text ediotr)
+
+(Rich Text Editor Source Code)[https://docs.slatejs.org/]
