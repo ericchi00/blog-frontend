@@ -17,8 +17,8 @@ const Home = () => {
 				_id: Math.random() * 3,
 				title: 'test message',
 				text: 'test text, very big very cool, much wow',
-				timestamp: '5/14/2022',
-				useranme: 'date',
+				date: '5/14/2022',
+				username: 'ericchi',
 				comments: [
 					{
 						name: 'test comment',
@@ -41,18 +41,21 @@ const Home = () => {
 
 	return (
 		<>
-			<Container fluid className="justify-content-center mt-3">
+			<Container fluid className="m-5">
 				{posts.map((post, i) => {
 					return (
-						<Card key={post._id} style={{ width: '18rem' }}>
+						<Card key={post._id} style={{ width: '350px' }}>
 							<Card.Body>
 								<Card.Title>
 									<Card.Link href="">{post.title}</Card.Link>
 								</Card.Title>
 								<Card.Subtitle className="mb-2 text-muted">
-									Card Subtitle
+									Published by: {post.username} on {post.date}
 								</Card.Subtitle>
 								<Card.Text>{post.text}</Card.Text>
+								<Card.Link href="" className="float-end">
+									Comments
+								</Card.Link>
 							</Card.Body>
 						</Card>
 					);
