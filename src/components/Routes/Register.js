@@ -5,12 +5,40 @@ import { Form as BootstrapForm } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import InputField from '../InputField';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Modal from 'react-bootstrap/Modal';
+import Alert from 'react-bootstrap/Alert';
+
+const SuccessModal = (props) => {
+	return (
+		<Modal
+			{...props}
+			size="lg"
+			aria-labelledby="contained-modal-title-vcenter"
+			centered
+		>
+			<Modal.Body>
+				<h4>Register Sucess!</h4>
+				Page will redirect in 5 seconds. If not click the green buttton.
+			</Modal.Body>
+			<Modal.Footer>
+				<Button href="/" variant="success">
+					Home
+				</Button>
+				<Button onClick={props.onHide}>Close</Button>
+			</Modal.Footer>
+		</Modal>
+	);
+};
 
 const Register = () => {
+	const [showError, setShowError] = useState(false);
+	const [showModal, setShowModal] = useState(false);
+	const [errors, setErrors] = useState(null);
+
 	useEffect(() => {
 		document.title = 'Register Form';
-	});
-
+	}, []);
 	return (
 		<>
 			<style type="text/css">
@@ -24,7 +52,13 @@ const Register = () => {
 
                     }`}
 			</style>
-			<Container fluid="lg" className="mt-5">
+			<Container fluid="lg" className="mt-5" style={{ overflow: 'hidden' }}>
+				{showModal ? (
+					<SuccessModal
+						show={showModal}
+						onHide={() => setShowModal(false)}
+					></SuccessModal>
+				) : null}
 				<Formik
 					initialValues={{
 						username: '',
@@ -43,14 +77,31 @@ const Register = () => {
 							'Passwords must match'
 						),
 					})}
-					onSubmit={(values, { setSubmitting }) => {
-						setTimeout(() => {
-							alert(JSON.stringify(values, null, 2));
-							setSubmitting(false);
-						}, 400);
+					onSubmit={async (values, { setSubmitting }) => {
+						const registerPost = await fetch('/register', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify(values),
+						});
+						const message = await registerPost.json();
+						if (message.message === 'User successfully created.') {
+							setShowModal(true);
+							setErrors(null);
+							setTimeout(() => {
+								window.location.href = '/';
+							}, 3000);
+						} else if (message.errors.length > 0) {
+							setShowError(true);
+							setErrors(message.errors);
+						}
+						setSubmitting(false);
 					}}
 				>
-					<Form className="border p-5 rounded border-3">
+					<Form
+						className="border p-5 rounded border-3"
+						method="POST"
+						action="/register"
+					>
 						<div className="card-body p-2 text-center">
 							<h3 className="mb-1">Register Form</h3>
 						</div>
@@ -78,7 +129,18 @@ const Register = () => {
 								className="form-control"
 							/>
 						</BootstrapForm.Group>
-						<Button variant="primary" type="submit">
+						{showError ? (
+							<ListGroup>
+								{errors.map((error, i) => {
+									return (
+										<Alert variant="danger" key={i} className="p-2">
+											{error.msg}
+										</Alert>
+									);
+								})}
+							</ListGroup>
+						) : null}
+						<Button variant="primary" type="submit" className="mt-1">
 							Register
 						</Button>
 					</Form>
