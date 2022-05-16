@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import Alert from 'react-bootstrap/Alert';
 import { useField } from 'formik';
-import Feedback from 'react-bootstrap/Feedback';
-import { Form } from 'react-bootstrap';
 
 const InputField = ({ label, ...props }) => {
 	const [field, meta] = useField(props);
