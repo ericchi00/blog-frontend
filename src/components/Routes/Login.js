@@ -4,13 +4,17 @@ import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import { Formik, Form } from 'formik';
 import InputField from '../InputField';
+import Alert from 'react-bootstrap/Alert';
+import { useSignIn } from 'react-auth-kit';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
-	useEffect(() => {
-		document.title = 'Login Form';
-	});
+const Login = ({ setUsername }) => {
+	const [error, setError] = useState(false);
+	const navigate = useNavigate();
 
-	const login = () => {};
+	document.title = 'Login Form';
+
+	const signIn = useSignIn();
 
 	return (
 		<>
@@ -28,14 +32,37 @@ const Login = () => {
 						username: '',
 						password: '',
 					}}
-					onSubmit={(values, { setSubmitting }) => {
-						setTimeout(() => {
-							alert(JSON.stringify(values, null, 2));
-							setSubmitting(false);
-						}, 400);
+					onSubmit={async (values, { setSubmitting }) => {
+						const registerPost = await fetch('/users/login', {
+							method: 'POST',
+							headers: {
+								Accept: 'application/json',
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(values),
+						});
+						const message = await registerPost.json();
+						if (message === 401) return setError(true);
+						if (
+							signIn({
+								token: message.token,
+								expiresIn: message.expiresIn,
+								tokenType: 'Bearer',
+								authState: message.authState,
+							})
+						) {
+							navigate('/');
+						} else {
+							throw new Error('An error has occurred. Please try again.');
+						}
+						setSubmitting(false);
 					}}
 				>
-					<Form className="border p-5 rounded border-3">
+					<Form
+						className="border p-5 rounded border-3"
+						action="/login"
+						method="POST"
+					>
 						<div className="card-body p-2 text-center">
 							<h3 className="mb-1">Login Form</h3>
 						</div>
@@ -55,6 +82,11 @@ const Login = () => {
 								className="form-control"
 							/>
 						</BootstrapForm.Group>
+						{error ? (
+							<Alert variant="danger" className="p-2">
+								Incorrect username or password.
+							</Alert>
+						) : null}
 						<Button variant="primary" type="submit">
 							Login
 						</Button>
