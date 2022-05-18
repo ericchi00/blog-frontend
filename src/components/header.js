@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useAuthUser } from 'react-auth-kit';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
@@ -6,44 +6,65 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import { useSignOut } from 'react-auth-kit';
 import { useIsAuthenticated } from 'react-auth-kit';
+import { Link } from 'react-router-dom';
+
+const signOutPost = async () => {
+	const registerPost = await fetch('/users/logout', {
+		method: 'POST',
+	});
+	const message = await registerPost.json();
+	console.log(message);
+};
 
 const Header = () => {
-	const [username, setUsername] = useState();
 	const isAuthenticated = useIsAuthenticated();
 	const auth = useAuthUser();
 	const signOut = useSignOut();
-
-	useEffect(() => {
-		if (isAuthenticated()) {
-			setUsername(auth().username);
+	const signOutPost = async () => {
+		const registerPost = await fetch('/users/logout', {
+			method: 'POST',
+		});
+		const message = await registerPost.json();
+		if (message.message === 'An error has  occurred.') {
+			throw new Error('An error has occurred.');
 		}
-	});
+	};
 
 	return (
 		<Navbar bg="dark" variant="dark">
 			<Container fluid className="">
-				<Navbar.Brand href="/">Message Board</Navbar.Brand>
+				<Navbar.Brand as={Link} to="/">
+					Message Board
+				</Navbar.Brand>
 				<Nav className="me-auto">
-					<Nav.Link href="/">Home</Nav.Link>
+					<Nav.Link as={Link} to="/">
+						Home
+					</Nav.Link>
 				</Nav>
 				{isAuthenticated() ? (
 					<>
 						<Navbar.Text className="me-3">
-							Signed in as: {username}{' '}
+							Signed in as: {auth().username}{' '}
 						</Navbar.Text>
-						<Button href="/createpost" variant="light" className="me-2">
+						<Button variant="light" className="me-2" as={Link} to="/createpost">
 							Create a Post
 						</Button>
-						<Button href="/" onClick={() => signOut()} variant="light">
+						<Button
+							onClick={() => {
+								signOutPost();
+								signOut();
+							}}
+							variant="light"
+						>
 							Logout
 						</Button>
 					</>
 				) : (
 					<>
-						<Button href="/register" variant="light" className="me-2">
+						<Button variant="light" className="me-2" as={Link} to="/register">
 							Register
 						</Button>
-						<Button href="/login" variant="light">
+						<Button variant="light" as={Link} to="/login">
 							Login
 						</Button>
 					</>
