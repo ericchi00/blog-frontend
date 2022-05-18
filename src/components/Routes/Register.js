@@ -6,39 +6,15 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import InputField from '../InputField';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
-
-const SuccessModal = (props) => {
-	return (
-		<Modal
-			{...props}
-			size="lg"
-			aria-labelledby="contained-modal-title-vcenter"
-			centered
-		>
-			<Modal.Body>
-				<h4>Register Sucess!</h4>
-				Page will redirect in 5 seconds. If not click the green buttton.
-			</Modal.Body>
-			<Modal.Footer>
-				<Button href="/" variant="success">
-					Home
-				</Button>
-				<Button onClick={props.onHide}>Close</Button>
-			</Modal.Footer>
-		</Modal>
-	);
-};
+import SuccessModal from '../SuccessModal';
 
 const Register = () => {
 	const [showError, setShowError] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [errors, setErrors] = useState(null);
 
-	useEffect(() => {
-		document.title = 'Register Form';
-	}, []);
+	document.title = 'Register Form';
 	return (
 		<>
 			<style type="text/css">
@@ -72,13 +48,12 @@ const Register = () => {
 						password: Yup.string()
 							.min(5, 'Must be at least 5 characters')
 							.required('Password is required'),
-						confirmPassword: Yup.string().oneOf(
-							[Yup.ref('password'), null],
-							'Passwords must match'
-						),
+						confirmPassword: Yup.string()
+							.oneOf([Yup.ref('password'), null], 'Passwords must match')
+							.required('Please confirm your password'),
 					})}
 					onSubmit={async (values, { setSubmitting }) => {
-						const registerPost = await fetch('/register', {
+						const registerPost = await fetch('/users', {
 							method: 'POST',
 							headers: { 'Content-Type': 'application/json' },
 							body: JSON.stringify(values),
@@ -89,7 +64,7 @@ const Register = () => {
 							setErrors(null);
 							setTimeout(() => {
 								window.location.href = '/';
-							}, 3000);
+							}, 2500);
 						} else if (message.errors.length > 0) {
 							setShowError(true);
 							setErrors(message.errors);
