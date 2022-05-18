@@ -6,4 +6,4 @@ https://www.theodinproject.com/lessons/nodejs-blog-api
 
 ## Technologies
 
-HTML, React-Bootstrap, React, Formik (form valiidation), Yup (schema validation), TinyMCE(rich text editor)
+HTML, React-Bootstrap, React, Formik (form valiidation), Yup (schema validation), TinyMCE(rich text editor), React Auth Kit(Auth Management Library)
