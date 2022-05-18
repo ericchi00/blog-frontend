@@ -8,6 +8,7 @@ import Register from './Register';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MessageForm from './MessageForm';
 import Post from '../../Post';
+import ErrorPage from './ErrorPage';
 
 const RoutesComponent = () => {
 	return (
@@ -26,6 +27,7 @@ const RoutesComponent = () => {
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/posts/:id" element={<Post />} />
+				<Route path="*" element={<ErrorPage />} />
 			</Routes>
 		</BrowserRouter>
 	);
