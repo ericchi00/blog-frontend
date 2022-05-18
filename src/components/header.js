@@ -6,20 +6,13 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import { useSignOut } from 'react-auth-kit';
 import { useIsAuthenticated } from 'react-auth-kit';
-import { Link } from 'react-router-dom';
-
-const signOutPost = async () => {
-	const registerPost = await fetch('/users/logout', {
-		method: 'POST',
-	});
-	const message = await registerPost.json();
-	console.log(message);
-};
+import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
 	const isAuthenticated = useIsAuthenticated();
 	const auth = useAuthUser();
 	const signOut = useSignOut();
+	const navigate = useNavigate();
 	const signOutPost = async () => {
 		const registerPost = await fetch('/users/logout', {
 			method: 'POST',
@@ -28,6 +21,7 @@ const Header = () => {
 		if (message.message === 'An error has  occurred.') {
 			throw new Error('An error has occurred.');
 		}
+		navigate('/');
 	};
 
 	return (
