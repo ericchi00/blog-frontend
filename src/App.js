@@ -1,7 +1,6 @@
 import React from 'react';
 import { AuthProvider } from 'react-auth-kit';
 import RoutesComponent from './components/Routes/Routes';
-import Header from './components/Header';
 
 const App = () => {
 	return (
