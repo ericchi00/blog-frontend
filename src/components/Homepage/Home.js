@@ -15,7 +15,6 @@ const Home = () => {
 			const response = await fetch('/api/blogposts', { mode: 'cors' });
 			const blogPosts = await response.json();
 			setBlogPosts(blogPosts);
-			console.log(blogPost);
 		} catch (error) {
 			console.error(error);
 		}
