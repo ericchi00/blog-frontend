@@ -63,8 +63,8 @@ const Register = () => {
 							setShowModal(true);
 							setErrors(null);
 							setTimeout(() => {
-								window.location.href = '/';
-							}, 2500);
+								window.location.href = '/login';
+							}, 1500);
 						} else if (message.errors.length > 0) {
 							setShowError(true);
 							setErrors(message.errors);
