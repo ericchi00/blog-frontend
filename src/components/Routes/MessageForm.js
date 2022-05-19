@@ -1,27 +1,47 @@
 import React, { useState, useRef } from 'react';
+import { useAuthUser, useAuthHeader } from 'react-auth-kit';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { Editor } from '@tinymce/tinymce-react';
+import { useNavigate } from 'react-router-dom';
 
 const MessageForm = () => {
 	const editorRef = useRef(null);
+	const [dirty, setDirty] = useState(false);
 	const [title, setTitle] = useState('');
-	const [text, setText] = useState('');
+
+	const auth = useAuthUser();
+	const id = auth().id;
+	const authHeader = useAuthHeader();
+
+	const navigate = useNavigate();
 
 	const handleTitle = (e) => {
 		const { value } = e.target;
 		setTitle(value);
 	};
 
-	const handleText = () => {
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 		if (editorRef.current) {
-			setText(editorRef.current.getContent());
-		}
-	};
+			const text = editorRef.current.getContent();
+			setDirty(false);
+			editorRef.current.setDirty(false);
 
-	const handleSubmit = async () => {
-		alert(JSON.stringify({ title, text }));
+			const postMessage = await fetch('/api/messages', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: authHeader(),
+				},
+				body: JSON.stringify({ id, title, text }),
+			});
+			const message = await postMessage.json();
+			if (message === 201) {
+				navigate('/');
+			}
+		}
 	};
 
 	return (
@@ -29,12 +49,10 @@ const MessageForm = () => {
 			<Container fluid="lg" className="mt-5">
 				<Form
 					className="border p-5 rounded border-3"
-					action="/createpost"
-					method="post"
-					onSubmit={() => handleSubmit()}
+					onSubmit={(e) => handleSubmit(e)}
 				>
 					<div className="card-body p-0 text-center">
-						<h3>Submit a Post</h3>
+						<h3>Submit a Message</h3>
 					</div>
 					<Form.Group className="mb-3" controlId="title">
 						<Form.Label>
@@ -52,10 +70,10 @@ const MessageForm = () => {
 							Message<span className="text-danger">*</span>
 						</Form.Label>
 						<Editor
-							onChange={() => handleText()}
 							apiKey={process.env.REACT_APP_TINY_MCE}
 							onInit={(evt, editor) => (editorRef.current = editor)}
-							initialValue="<p>Enter your text here...</p>"
+							onDirty={() => setDirty(true)}
+							initialValue={'<p>Enter your text here...</p>'}
 							init={{
 								height: 250,
 								menubar: false,
