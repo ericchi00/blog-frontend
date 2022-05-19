@@ -26,7 +26,7 @@ const RoutesComponent = () => {
 				/>
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
-				<Route path="/blogpost/:id" element={<BlogPost />} />
+				<Route path="/blogposts/:id" element={<BlogPost />} />
 				<Route path="*" element={<ErrorPage />} />
 			</Routes>
 		</BrowserRouter>
