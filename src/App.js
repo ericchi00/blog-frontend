@@ -4,11 +4,9 @@ import RoutesComponent from './components/Routes/Routes';
 
 const App = () => {
 	return (
-		<>
-			<AuthProvider authType={'localstorage'} authName={'_auth'}>
-				<RoutesComponent />
-			</AuthProvider>
-		</>
+		<AuthProvider authType={'localstorage'} authName={'_auth'}>
+			<RoutesComponent />
+		</AuthProvider>
 	);
 };
 
