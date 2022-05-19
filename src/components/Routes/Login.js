@@ -33,7 +33,7 @@ const Login = ({ setUsername }) => {
 						password: '',
 					}}
 					onSubmit={async (values, { setSubmitting }) => {
-						const registerPost = await fetch('/users/login', {
+						const loginPost = await fetch('/users/login', {
 							method: 'POST',
 							headers: {
 								Accept: 'application/json',
@@ -41,8 +41,9 @@ const Login = ({ setUsername }) => {
 							},
 							body: JSON.stringify(values),
 						});
-						const message = await registerPost.json();
-						if (message === 401) return setError(true);
+						if (loginPost.status === 500 || loginPost.status === 401)
+							return setError(true);
+						const message = await loginPost.json();
 						if (
 							signIn({
 								token: message.token,
@@ -52,8 +53,6 @@ const Login = ({ setUsername }) => {
 							})
 						) {
 							navigate('/');
-						} else {
-							throw new Error('An error has occurred. Please try again.');
 						}
 						setSubmitting(false);
 					}}
