@@ -1,11 +1,9 @@
 import React from 'react';
-import { useAuthUser } from 'react-auth-kit';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
-import { useSignOut } from 'react-auth-kit';
-import { useIsAuthenticated } from 'react-auth-kit';
+import { useSignOut, useIsAuthenticated, useAuthUser } from 'react-auth-kit';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
@@ -14,12 +12,16 @@ const Header = () => {
 	const signOut = useSignOut();
 	const navigate = useNavigate();
 	const signOutPost = async () => {
-		const registerPost = await fetch('/users/logout', {
-			method: 'POST',
-		});
-		const message = await registerPost.json();
-		if (message.message === 'An error has  occurred.') {
-			throw new Error('An error has occurred.');
+		try {
+			const logoutPost = await fetch('/users/logout', {
+				method: 'POST',
+			});
+			if (logoutPost.status === 500) {
+				throw new Error('An error has occured.');
+			}
+			navigate('/');
+		} catch (error) {
+			console.error(error);
 		}
 		navigate('/');
 	};
@@ -30,11 +32,7 @@ const Header = () => {
 				<Navbar.Brand as={Link} to="/">
 					Message Board
 				</Navbar.Brand>
-				<Nav className="me-auto">
-					<Nav.Link as={Link} to="/">
-						Home
-					</Nav.Link>
-				</Nav>
+				<Nav className="me-auto"></Nav>
 				{isAuthenticated() ? (
 					<>
 						<Navbar.Text className="me-3">
