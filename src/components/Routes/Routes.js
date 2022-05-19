@@ -7,7 +7,7 @@ import Home from '../Homepage/Home';
 import Register from './Register';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MessageForm from './MessageForm';
-import Message from '../../Message';
+import Message from '../MessagePost/Message';
 import ErrorPage from './ErrorPage';
 
 const RoutesComponent = () => {
