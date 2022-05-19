@@ -14,27 +14,27 @@ const createMarkup = (html) => {
 
 const BlogPost = () => {
 	const [loading, setLoading] = useState(true);
-	const [messageInfo, setMessageInfo] = useState('');
+	const [blogPostInfo, setBlogPostInfo] = useState('');
 	const [comments, setComments] = useState('');
 	const navigate = useNavigate();
 	const { id } = useParams();
 
-	document.title = messageInfo.title;
+	document.title = blogPostInfo.title;
 
 	const isAuthenticated = useIsAuthenticated();
 	const auth = useAuthUser();
 
 	useEffect(() => {
-		getMessageFromID();
+		getBlogPostFromID();
 	}, []);
 
-	const getMessageFromID = async () => {
-		const getMessage = await fetch(`/api/messages/${id}`);
-		if (getMessage.status === 500) {
+	const getBlogPostFromID = async () => {
+		const getBlogPost = await fetch(`/api/blogposts/${id}`);
+		if (getBlogPost.status === 500) {
 			return navigate('*');
 		}
-		const response = await getMessage.json();
-		setMessageInfo(response);
+		const response = await getBlogPost.json();
+		setBlogPostInfo(response);
 		setLoading(false);
 	};
 
@@ -42,10 +42,10 @@ const BlogPost = () => {
 		<Container fluid>
 			{loading ? null : (
 				<Container style={{ maxWidth: '800px', marginTop: '3rem' }}>
-					<h1 className="text-center">{messageInfo.title}</h1>
-					<span>Published by: {messageInfo.username.username}</span>
-					<p> {format(new Date(messageInfo.date), 'Pp')}</p>
-					<p dangerouslySetInnerHTML={createMarkup(messageInfo.text)}></p>
+					<h1 className="text-center">{blogPostInfo.title}</h1>
+					<span>Published by: {blogPostInfo.username.username}</span>
+					<p> {format(new Date(blogPostInfo.date), 'Pp')}</p>
+					<p className='mb-5' dangerouslySetInnerHTML={createMarkup(blogPostInfo.text)}></p>
 
 					{isAuthenticated() ? (
 						<Form className="mb-5">
