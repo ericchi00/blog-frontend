@@ -3,10 +3,12 @@ import { useAuthUser, useAuthHeader } from 'react-auth-kit';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
 import { Editor } from '@tinymce/tinymce-react';
 import { useNavigate } from 'react-router-dom';
 
-const MessageForm = () => {
+const BlogPostForm = () => {
+	const [error, setError] = useState(false);
 	const editorRef = useRef(null);
 	const [dirty, setDirty] = useState(false);
 	const [title, setTitle] = useState('');
@@ -29,7 +31,7 @@ const MessageForm = () => {
 			setDirty(false);
 			editorRef.current.setDirty(false);
 
-			const postMessage = await fetch('/api/messages', {
+			const postMessage = await fetch('/api/blogposts', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -37,9 +39,10 @@ const MessageForm = () => {
 				},
 				body: JSON.stringify({ id, title, text }),
 			});
-			const message = await postMessage.json();
-			if (message === 201) {
+			if (postMessage.status === 200) {
 				navigate('/');
+			} else {
+				setError(true);
 			}
 		}
 	};
@@ -109,9 +112,14 @@ const MessageForm = () => {
 					<Button variant="primary" type="submit" className="m-1 float-end">
 						Submit
 					</Button>
+					{error ? (
+						<Alert variant="danger">
+							An error has occurred. Please try again.
+						</Alert>
+					) : null}
 				</Form>
 			</Container>
 		</>
 	);
 };
-export default MessageForm;
+export default BlogPostForm;

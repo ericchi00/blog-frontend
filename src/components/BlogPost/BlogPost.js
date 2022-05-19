@@ -6,17 +6,20 @@ import Button from 'react-bootstrap/Button';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useAuthUser, useIsAuthenticated } from 'react-auth-kit';
+import Comment from './Comment';
 
 const createMarkup = (html) => {
 	return { __html: html };
 };
 
-const Message = () => {
+const BlogPost = () => {
 	const [loading, setLoading] = useState(true);
 	const [messageInfo, setMessageInfo] = useState('');
 	const [comments, setComments] = useState('');
 	const navigate = useNavigate();
 	const { id } = useParams();
+
+	document.title = messageInfo.title;
 
 	const isAuthenticated = useIsAuthenticated();
 	const auth = useAuthUser();
@@ -45,22 +48,29 @@ const Message = () => {
 					<p dangerouslySetInnerHTML={createMarkup(messageInfo.text)}></p>
 
 					{isAuthenticated() ? (
-						<>
-							<Form>
-								<Form.Group className="mt-5 mb-3" controlId="comment">
-									<Form.Label className="invisible">Comment</Form.Label>
-									<p>username: auth data </p>
-									<Form.Control as="textarea" rows={3} />
-								</Form.Group>
-								<Button variant="primary">Submit Comment</Button>
-							</Form>
-							<h4 className="mt-3 border-bottom">Comments</h4>
-						</>
+						<Form className="mb-5">
+							<Form.Group className="mt-5 mb-3" controlId="comment">
+								<Form.Label className="invisible">Comment</Form.Label>
+								<p>commenting as: {auth().username}</p>
+								<Form.Control
+									as="textarea"
+									name="comment"
+									rows={3}
+									minLength={3}
+									maxLength={500}
+									required
+								/>
+							</Form.Group>
+							<Button variant="secondary" type="submit" className="float-end">
+								Submit Comment
+							</Button>
+						</Form>
 					) : null}
+					<h4 className="mt-3 border-bottom">Comments</h4>
 				</Container>
 			)}
 		</Container>
 	);
 };
 
-export default Message;
+export default BlogPost;

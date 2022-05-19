@@ -6,9 +6,9 @@ import Login from './Login';
 import Home from '../Homepage/Home';
 import Register from './Register';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import MessageForm from './MessageForm';
-import Message from '../MessagePost/Message';
 import ErrorPage from './ErrorPage';
+import BlogPost from '../BlogPost/BlogPost';
+import BlogPostForm from './BlogPostForm';
 
 const RoutesComponent = () => {
 	return (
@@ -20,13 +20,13 @@ const RoutesComponent = () => {
 					path="/createpost"
 					element={
 						<RequireAuth loginPath={'/login'}>
-							<MessageForm />
+							<BlogPostForm />
 						</RequireAuth>
 					}
 				/>
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
-				<Route path="/messages/:id" element={<Message />} />
+				<Route path="/blogpost/:id" element={<BlogPost />} />
 				<Route path="*" element={<ErrorPage />} />
 			</Routes>
 		</BrowserRouter>

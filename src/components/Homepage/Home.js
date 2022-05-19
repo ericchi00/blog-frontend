@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import MessageCard from './MessageCard';
+import BlogPostCard from './BlogPostCard';
 
 const Home = () => {
-	document.title = 'Message Board';
-	const [messages, setMessages] = useState([]);
+	document.title = 'Blogging';
+	const [blogPost, setBlogPosts] = useState([]);
 
 	useEffect(() => {
-		getMessages();
+		getBlogPosts();
 	}, []);
 
-	const getMessages = async () => {
+	const getBlogPosts = async () => {
 		try {
-			const response = await fetch('/api/messages', { mode: 'cors' });
-			const messages = await response.json();
-			setMessages(messages);
+			const response = await fetch('/api/blogposts', { mode: 'cors' });
+			const blogPosts = await response.json();
+			setBlogPosts(blogPosts);
+			console.log(blogPost);
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
 	return (
-		<Container fluid className="p-5 d-flex flex-wrap">
-			{messages.map((message, i) => {
-				return <MessageCard message={message} key={message._id} />;
+		<Container
+			fluid="xxl"
+			className="p-5 d-flex flex-wrap justify-content-center"
+		>
+			{blogPost.map((blogPost, i) => {
+				return <BlogPostCard blogPost={blogPost} key={blogPost._id} />;
 			})}
 		</Container>
 	);
