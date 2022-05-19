@@ -30,7 +30,7 @@ const Header = () => {
 		<Navbar bg="dark" variant="dark">
 			<Container fluid className="">
 				<Navbar.Brand as={Link} to="/">
-					Message Board
+					Blog
 				</Navbar.Brand>
 				<Nav className="me-auto"></Nav>
 				{isAuthenticated() ? (
