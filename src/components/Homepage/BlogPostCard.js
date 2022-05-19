@@ -6,12 +6,20 @@ const createMarkup = (html) => {
 	return { __html: html };
 };
 
+const limitCharacterSize = (arr) => {};
+
 const BlogPostCard = ({ blogPost }) => {
 	return (
-		<Card key={blogPost._id} style={{ width: '350px', margin: '1rem' }}>
+		<Card
+			key={blogPost._id}
+			style={{
+				width: '350px',
+				margin: '1rem',
+			}}
+		>
 			<Card.Body>
 				<Card.Title>
-					<Card.Link href={`/messages/${blogPost._id}`}>
+					<Card.Link href={`/blogposts/${blogPost._id}`}>
 						{blogPost.title}
 					</Card.Link>
 				</Card.Title>
@@ -21,9 +29,16 @@ const BlogPostCard = ({ blogPost }) => {
 				</Card.Subtitle>
 				<Card.Text
 					dangerouslySetInnerHTML={createMarkup(blogPost.text)}
+					style={{
+						display: '-webkit-box',
+						overflow: 'hidden',
+						WebkitLineClamp: '8',
+						WebkitBoxOrient: 'vertical',
+						textOverflow: 'ellipsis',
+					}}
 				></Card.Text>
 				<Card.Link
-					href={`/messages/${blogPost._id}`}
+					href={`/blogposts/${blogPost._id}`}
 					className="position-absolute bottom-0 end-0 p-2"
 				>
 					Comments
