@@ -1,39 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+import { format } from 'date-fns';
+
+const createMarkup = (html) => {
+	return { __html: html };
+};
 
 const Home = () => {
-	const [posts, setPosts] = useState([]);
+	document.title = 'Message Board';
+	const [messages, setMessages] = useState([]);
 
 	useEffect(() => {
-		// getPosts();
-		tempPosts();
+		getMessages();
 	}, []);
 
-	const tempPosts = () => {
-		setPosts([
-			{
-				_id: Math.random() * 3,
-				title: 'test message',
-				text: 'test text, very big very cool, much wow',
-				date: '5/14/2022',
-				username: 'ericchi',
-				comments: [
-					{
-						name: 'test comment',
-						comment: 'test comment',
-					},
-				],
-			},
-		]);
-	};
-
-	const getPosts = async () => {
+	const getMessages = async () => {
 		try {
-			const response = await fetch('/api/posts', { mode: 'cors' });
-			const posts = await response.json();
-			setPosts(posts);
+			const response = await fetch('/api/messages', { mode: 'cors' });
+			const messages = await response.json();
+			setMessages(messages);
 		} catch (error) {
 			console.error(error);
 		}
@@ -41,19 +27,27 @@ const Home = () => {
 
 	return (
 		<>
-			<Container fluid className="m-5">
-				{posts.map((post, i) => {
+			<Container fluid className="p-5 d-flex flex-wrap">
+				{messages.map((message, i) => {
 					return (
-						<Card key={post._id} style={{ width: '350px' }}>
+						<Card key={message._id} style={{ width: '350px', margin: '1rem' }}>
 							<Card.Body>
 								<Card.Title>
-									<Card.Link href="">{post.title}</Card.Link>
+									<Card.Link href={`/messages/${message._id}`}>
+										{message.title}
+									</Card.Link>
 								</Card.Title>
 								<Card.Subtitle className="mb-2 text-muted">
-									Published by: {post.username} on {post.date}
+									<span>Published by: {message.username.username}</span>
+									<p> {format(new Date(message.date), 'Pp')}</p>
 								</Card.Subtitle>
-								<Card.Text>{post.text}</Card.Text>
-								<Card.Link href="" className="float-end">
+								<Card.Text
+									dangerouslySetInnerHTML={createMarkup(message.text)}
+								></Card.Text>
+								<Card.Link
+									href={`/messages/${message._id}`}
+									className="position-absolute bottom-0 end-0 p-2"
+								>
 									Comments
 								</Card.Link>
 							</Card.Body>
