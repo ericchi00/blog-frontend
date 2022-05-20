@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import BlogPostCard from './BlogPostCard';
 
 const Home = () => {
-	document.title = 'Blogging';
+	document.title = "Eric's Blog";
 	const [blogPost, setBlogPosts] = useState([]);
 
 	useEffect(() => {
@@ -21,10 +21,7 @@ const Home = () => {
 	};
 
 	return (
-		<Container
-			fluid="xxl"
-			className="p-5 d-flex flex-wrap justify-content-center"
-		>
+		<Container fluid="xl" className="p-5 d-flex flex-wrap justify-content-center">
 			{blogPost.map((blogPost, i) => {
 				return <BlogPostCard blogPost={blogPost} key={blogPost._id} />;
 			})}
