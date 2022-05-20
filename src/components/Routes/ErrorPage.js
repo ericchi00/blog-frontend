@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
 const ErrorPage = () => {
+	document.title = 'Error 404';
+
 	return (
 		<Container fluid>
 			<div className="d-flex align-items-end justify-content-center mt-5">
