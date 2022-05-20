@@ -14,7 +14,6 @@ const BlogPostForm = () => {
 	const [title, setTitle] = useState('');
 
 	const auth = useAuthUser();
-	const id = auth().id;
 	const authHeader = useAuthHeader();
 
 	const navigate = useNavigate();
@@ -28,9 +27,13 @@ const BlogPostForm = () => {
 		e.preventDefault();
 		if (editorRef.current) {
 			const text = editorRef.current.getContent();
+			if (text.length < 2) {
+				setError(true);
+				return;
+			}
 			setDirty(false);
 			editorRef.current.setDirty(false);
-
+			const id = auth().id;
 			const postMessage = await fetch('/api/blogposts', {
 				method: 'POST',
 				headers: {
@@ -39,11 +42,8 @@ const BlogPostForm = () => {
 				},
 				body: JSON.stringify({ id, title, text }),
 			});
-			if (postMessage.status === 200) {
-				navigate('/');
-			} else {
-				setError(true);
-			}
+			const blogPostID = await postMessage.json();
+			navigate(`/blogposts/${blogPostID}`);
 		}
 	};
 
@@ -73,6 +73,7 @@ const BlogPostForm = () => {
 							Message<span className="text-danger">*</span>
 						</Form.Label>
 						<Editor
+							textareaName="text"
 							apiKey={process.env.REACT_APP_TINY_MCE}
 							onInit={(evt, editor) => (editorRef.current = editor)}
 							onDirty={() => setDirty(true)}
@@ -109,14 +110,10 @@ const BlogPostForm = () => {
 							}}
 						/>
 					</Form.Group>
+					{error ? <Alert variant="danger">Text cannot be empty.</Alert> : null}
 					<Button variant="primary" type="submit" className="m-1 float-end">
 						Submit
 					</Button>
-					{error ? (
-						<Alert variant="danger">
-							An error has occurred. Please try again.
-						</Alert>
-					) : null}
 				</Form>
 			</Container>
 		</>
