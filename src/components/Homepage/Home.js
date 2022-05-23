@@ -13,8 +13,7 @@ const Home = () => {
 	const getBlogPosts = async () => {
 		try {
 			const response = await fetch(
-				'https://api-only-backend-blog-react.herokuapp.com/api/blogposts',
-				{ mode: 'cors' }
+				'https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts'
 			);
 			const blogPosts = await response.json();
 			setBlogPosts(blogPosts);

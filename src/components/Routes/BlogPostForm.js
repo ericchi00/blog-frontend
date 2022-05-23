@@ -35,7 +35,7 @@ const BlogPostForm = () => {
 			editorRef.current.setDirty(false);
 			const id = auth().id;
 			const postMessage = await fetch(
-				'https://api-only-backend-blog-react.herokuapp.com/api/blogposts',
+				'https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts',
 				{
 					method: 'POST',
 					headers: {

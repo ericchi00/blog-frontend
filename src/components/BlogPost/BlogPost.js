@@ -18,6 +18,7 @@ const BlogPost = () => {
 	const [loading, setLoading] = useState(true);
 	const [blogPostInfo, setBlogPostInfo] = useState('');
 	const [comment, setComment] = useState('');
+	const [newComment, setNewComment] = useState(null);
 
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -27,10 +28,13 @@ const BlogPost = () => {
 
 	useEffect(() => {
 		getBlogPostFromID();
-	}, []);
+		setNewComment(false);
+	}, [newComment]);
 
 	const getBlogPostFromID = async () => {
-		const getBlogPost = await fetch(`/api/blogposts/${id}`);
+		const getBlogPost = await fetch(
+			`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}`
+		);
 		if (getBlogPost.status === 500) {
 			return navigate('*');
 		}
@@ -45,9 +49,10 @@ const BlogPost = () => {
 		setComment(value);
 	};
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (e) => {
+		setNewComment(true);
 		const postComment = await fetch(
-			`https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}/comments`,
+			`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}/comments`,
 			{
 				method: 'POST',
 				headers: {
@@ -75,7 +80,7 @@ const BlogPost = () => {
 					></p>
 
 					{isAuthenticated() ? (
-						<Form className="mb-5" onSubmit={(e) => handleSubmit(e)}>
+						<Form className="mb-5">
 							<Form.Group className="mt-5 mb-3" controlId="comment">
 								<Form.Label className="invisible">Comment</Form.Label>
 								<p>commenting as: {auth().username}</p>
@@ -88,13 +93,18 @@ const BlogPost = () => {
 									as="textarea"
 									name="comment"
 									rows={3}
-									minLength={3}
-									maxLength={500}
+									minLength="3"
+									maxLength="150"
 									onChange={(e) => handleComment(e)}
 									required
 								/>
 							</Form.Group>
-							<Button variant="secondary" type="submit" className="float-end">
+							<Button
+								variant="secondary"
+								type="button"
+								className="float-end"
+								onClick={() => handleSubmit()}
+							>
 								Submit Comment
 							</Button>
 						</Form>

@@ -1,12 +1,11 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 
 const createMarkup = (html) => {
 	return { __html: html };
 };
-
-const limitCharacterSize = (arr) => {};
 
 const BlogPostCard = ({ blogPost }) => {
 	return (
@@ -19,9 +18,7 @@ const BlogPostCard = ({ blogPost }) => {
 		>
 			<Card.Body>
 				<Card.Title>
-					<Card.Link
-						href={`https://api-only-backend-blog-react.herokuapp.com/blogposts/${blogPost._id}`}
-					>
+					<Card.Link as={Link} to={`/blogposts/${blogPost._id}`}>
 						{blogPost.title}
 					</Card.Link>
 				</Card.Title>
@@ -40,7 +37,8 @@ const BlogPostCard = ({ blogPost }) => {
 					}}
 				></Card.Text>
 				<Card.Link
-					href={`/blogposts/${blogPost._id}`}
+					as={Link}
+					to={`/blogposts/${blogPost._id}`}
 					className="position-absolute bottom-0 end-0 p-2"
 				>
 					Comments

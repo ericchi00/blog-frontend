@@ -34,7 +34,7 @@ const Login = () => {
 					}}
 					onSubmit={async (values, { setSubmitting }) => {
 						const loginPost = await fetch(
-							'https://api-only-backend-blog-react.herokuapp.com/users/login',
+							'https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/users/login',
 							{
 								method: 'POST',
 								headers: {

@@ -54,7 +54,7 @@ const Register = () => {
 					})}
 					onSubmit={async (values, { setSubmitting }) => {
 						const registerPost = await fetch(
-							'https://api-only-backend-blog-react.herokuapp.com/users',
+							'https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/users',
 							{
 								method: 'POST',
 								headers: { 'Content-Type': 'application/json' },
