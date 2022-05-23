@@ -34,14 +34,17 @@ const BlogPostForm = () => {
 			setDirty(false);
 			editorRef.current.setDirty(false);
 			const id = auth().id;
-			const postMessage = await fetch('/api/blogposts', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: authHeader(),
-				},
-				body: JSON.stringify({ id, title, text }),
-			});
+			const postMessage = await fetch(
+				'https://api-only-backend-blog-react.herokuapp.com/api/blogposts',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: authHeader(),
+					},
+					body: JSON.stringify({ id, title, text }),
+				}
+			);
 			const blogPostID = await postMessage.json();
 			navigate(`/blogposts/${blogPostID}`);
 		}

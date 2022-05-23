@@ -33,14 +33,17 @@ const Login = () => {
 						password: '',
 					}}
 					onSubmit={async (values, { setSubmitting }) => {
-						const loginPost = await fetch('/users/login', {
-							method: 'POST',
-							headers: {
-								Accept: 'application/json',
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(values),
-						});
+						const loginPost = await fetch(
+							'https://api-only-backend-blog-react.herokuapp.com/users/login',
+							{
+								method: 'POST',
+								headers: {
+									Accept: 'application/json',
+									'Content-Type': 'application/json',
+								},
+								body: JSON.stringify(values),
+							}
+						);
 						if (loginPost.status === 500 || loginPost.status === 401)
 							return setError(true);
 						const message = await loginPost.json();

@@ -12,7 +12,10 @@ const Home = () => {
 
 	const getBlogPosts = async () => {
 		try {
-			const response = await fetch('/api/blogposts', { mode: 'cors' });
+			const response = await fetch(
+				'https://api-only-backend-blog-react.herokuapp.com/api/blogposts',
+				{ mode: 'cors' }
+			);
 			const blogPosts = await response.json();
 			setBlogPosts(blogPosts);
 		} catch (error) {
@@ -21,7 +24,10 @@ const Home = () => {
 	};
 
 	return (
-		<Container fluid="xl" className="p-5 d-flex flex-wrap justify-content-center">
+		<Container
+			fluid="xl"
+			className="p-5 d-flex flex-wrap justify-content-center"
+		>
 			{blogPost.map((blogPost, i) => {
 				return <BlogPostCard blogPost={blogPost} key={blogPost._id} />;
 			})}

@@ -19,7 +19,9 @@ const BlogPostCard = ({ blogPost }) => {
 		>
 			<Card.Body>
 				<Card.Title>
-					<Card.Link href={`/blogposts/${blogPost._id}`}>
+					<Card.Link
+						href={`https://api-only-backend-blog-react.herokuapp.com/blogposts/${blogPost._id}`}
+					>
 						{blogPost.title}
 					</Card.Link>
 				</Card.Title>

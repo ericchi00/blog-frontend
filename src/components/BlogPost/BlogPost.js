@@ -46,14 +46,17 @@ const BlogPost = () => {
 	};
 
 	const handleSubmit = async () => {
-		const postComment = await fetch(`/api/blogposts/${id}/comments`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: authHeader(),
-			},
-			body: JSON.stringify({ username: auth().id, comment, id }),
-		});
+		const postComment = await fetch(
+			`https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}/comments`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: authHeader(),
+				},
+				body: JSON.stringify({ username: auth().id, comment, id }),
+			}
+		);
 		if (postComment.status !== 200) {
 			return setError(true);
 		}

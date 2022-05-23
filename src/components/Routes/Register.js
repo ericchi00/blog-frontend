@@ -53,11 +53,14 @@ const Register = () => {
 							.required('Please confirm your password'),
 					})}
 					onSubmit={async (values, { setSubmitting }) => {
-						const registerPost = await fetch('/users', {
-							method: 'POST',
-							headers: { 'Content-Type': 'application/json' },
-							body: JSON.stringify(values),
-						});
+						const registerPost = await fetch(
+							'https://api-only-backend-blog-react.herokuapp.com/users',
+							{
+								method: 'POST',
+								headers: { 'Content-Type': 'application/json' },
+								body: JSON.stringify(values),
+							}
+						);
 						const message = await registerPost.json();
 						if (message.message === 'User successfully created.') {
 							setShowModal(true);
