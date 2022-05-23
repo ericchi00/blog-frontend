@@ -4,7 +4,8 @@ This is the front end for Project Blog API.
 
 https://www.theodinproject.com/lessons/nodejs-blog-api
 
-[Backend API](https://api-only-backend-blog-react.herokuapp.com/) [Backend Github](https://github.com/ericchi00/project-blog-api)
+[Backend API](https://api-only-backend-blog-react.herokuapp.com/) 
+[Backend Github](https://github.com/ericchi00/project-blog-api)
 
 ## Technologies
 
