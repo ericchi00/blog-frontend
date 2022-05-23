@@ -14,7 +14,7 @@ import Container from 'react-bootstrap/Container';
 
 const RoutesComponent = () => {
 	return (
-		<HashRouter basename={`/${process.env.REACT_APP_PUBLIC_URL}`}>
+		<HashRouter basename={`${process.env.REACT_APP_PUBLIC_URL}`}>
 			<Container fluid style={{ padding: '0px', minHeight: '100vh' }}>
 				<Header />
 				<Routes>
