@@ -19,7 +19,6 @@ const BlogPost = () => {
 	const [blogPostInfo, setBlogPostInfo] = useState('');
 	const [comment, setComment] = useState('');
 
-	document.title = blogPostInfo.title;
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const isAuthenticated = useIsAuthenticated();
@@ -36,8 +35,8 @@ const BlogPost = () => {
 			return navigate('*');
 		}
 		const response = await getBlogPost.json();
+		document.title = response.title;
 		setBlogPostInfo(response);
-		console.log(response);
 		setLoading(false);
 	};
 
@@ -46,8 +45,7 @@ const BlogPost = () => {
 		setComment(value);
 	};
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+	const handleSubmit = async () => {
 		const postComment = await fetch(`/api/blogposts/${id}/comments`, {
 			method: 'POST',
 			headers: {
@@ -57,7 +55,7 @@ const BlogPost = () => {
 			body: JSON.stringify({ username: auth().id, comment, id }),
 		});
 		if (postComment.status !== 200) {
-			setError(true);
+			return setError(true);
 		}
 	};
 
@@ -99,7 +97,9 @@ const BlogPost = () => {
 						</Form>
 					) : null}
 					<h4 className="mt-3 border-bottom">Comments</h4>
-					{loading ? null : (
+					{blogPostInfo.comments.length === 0 ? (
+						<p>No comments. Make the first one!</p>
+					) : (
 						<>
 							{blogPostInfo.comments.map((comment, i) => {
 								return <Comment key={comment._id} comment={comment} />;
