@@ -24,3 +24,7 @@ Users can create rich text markup using TinyMCE for new blog posts
 Users can comment
 
 Backend is API only
+
+Protected routes on backend & frontend. Can only access if authenticated.
+
+[Live Demo](https://ericchi00.github.io/blog-frontend/)
