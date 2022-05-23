@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { RequireAuth } from 'react-auth-kit';
 import Header from '../Header';
 import Login from './Login';
@@ -14,7 +14,7 @@ import Container from 'react-bootstrap/Container';
 
 const RoutesComponent = () => {
 	return (
-		<HashRouter basename={process.env.REACT_APP_PUBLIC_URL}>
+		<BrowserRouter basename={process.env.REACT_APP_PUBLIC_URL}>
 			<Container fluid style={{ padding: '0px', minHeight: '100vh' }}>
 				<Header />
 				<Routes>
@@ -34,7 +34,7 @@ const RoutesComponent = () => {
 				</Routes>
 			</Container>
 			<Footer />
-		</HashRouter>
+		</BrowserRouter>
 	);
 };
 export default RoutesComponent;
