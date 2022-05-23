@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useField } from 'formik';
 
 const InputField = ({ label, ...props }) => {

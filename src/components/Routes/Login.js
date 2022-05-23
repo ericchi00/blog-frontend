@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form as BootstrapForm } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
@@ -8,7 +8,7 @@ import Alert from 'react-bootstrap/Alert';
 import { useSignIn } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({ setUsername }) => {
+const Login = () => {
 	const [error, setError] = useState(false);
 	const navigate = useNavigate();
 
