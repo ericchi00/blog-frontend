@@ -8,11 +8,14 @@ import InputField from '../InputField';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Alert from 'react-bootstrap/Alert';
 import SuccessModal from '../SuccessModal';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
 	const [showError, setShowError] = useState(false);
 	const [showModal, setShowModal] = useState(false);
 	const [errors, setErrors] = useState(null);
+
+	const navigate = useNavigate();
 
 	document.title = 'Register Form';
 	return (
@@ -66,7 +69,7 @@ const Register = () => {
 							setShowModal(true);
 							setErrors(null);
 							setTimeout(() => {
-								window.location.href = '/login';
+								navigate('/login');
 							}, 1500);
 						} else if (message.errors.length > 0) {
 							setShowError(true);
