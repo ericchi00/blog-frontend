@@ -67,10 +67,30 @@ const BlogPost = () => {
 		}
 	};
 
+	const handleDelete = async (e) => {
+		navigate('/');
+		await fetch(
+			`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}`,
+			{
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: authHeader(),
+				},
+			}
+		);
+	};
+
 	return (
 		<Container fluid>
 			{loading ? null : (
 				<Container style={{ maxWidth: '800px', marginTop: '3rem' }}>
+					{isAuthenticated() &&
+					auth().username === blogPostInfo.username.username ? (
+						<Button variant="outline-danger" onClick={(e) => handleDelete(e)}>
+							Delete
+						</Button>
+					) : null}
 					<h1 className="text-center">{blogPostInfo.title}</h1>
 					<span>Published by: {blogPostInfo.username.username}</span>
 					<p> {format(new Date(blogPostInfo.date), 'Pp')}</p>
