@@ -11,6 +11,9 @@ const Footer = () => {
 				<Nav.Link href="https://api-only-backend-blog-react.herokuapp.com/">
 					Backend API
 				</Nav.Link>
+				<Nav.Link href="https://github.com/ericchi00/project-blog-api">
+					Backend API Source Code
+				</Nav.Link>
 			</Container>
 		</Navbar>
 	);
