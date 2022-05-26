@@ -13,9 +13,12 @@ const Header = () => {
 	const navigate = useNavigate();
 	const signOutPost = async () => {
 		try {
-			const logoutPost = await fetch('/users/logout', {
-				method: 'POST',
-			});
+			const logoutPost = await fetch(
+				'https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/users/logout',
+				{
+					method: 'POST',
+				}
+			);
 			if (logoutPost.status === 500) {
 				throw new Error('An error has occured.');
 			}
