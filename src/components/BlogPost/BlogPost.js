@@ -49,32 +49,36 @@ const BlogPost = () => {
 		setComment(value);
 	};
 
-	const handleSubmit = async (e) => {
-		setNewComment(true);
-		const postComment = await fetch(
-			`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}/comments`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: authHeader(),
-				},
-				body: JSON.stringify({ username: auth().id, comment, id }),
+	const handleSubmit = async () => {
+		try {
+			document.getElementsByTagName('textarea')[0].value = '';
+			setNewComment(true);
+			const postComment = await fetch(
+				`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}/comments`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: authHeader(),
+					},
+					body: JSON.stringify({ username: auth().id, comment, id }),
+				}
+			);
+			if (postComment.status !== 200) {
+				return setError(true);
 			}
-		);
-		if (postComment.status !== 200) {
-			return setError(true);
+		} catch (error) {
+			console.error(error);
 		}
 	};
 
 	const handleDelete = async (e) => {
 		navigate('/');
-		await fetch(
+		const deleteBlogPost = await fetch(
 			`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}`,
 			{
 				method: 'DELETE',
 				headers: {
-					'Content-Type': 'application/json',
 					Authorization: authHeader(),
 				},
 			}
