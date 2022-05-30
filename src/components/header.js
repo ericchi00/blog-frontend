@@ -31,7 +31,7 @@ const Header = () => {
 
 	return (
 		<Navbar bg="dark" variant="dark">
-			<Container fluid className="">
+			<Container fluid="md">
 				<Navbar.Brand as={Link} to="/">
 					Blog
 				</Navbar.Brand>
