@@ -30,10 +30,10 @@ const BlogPostCard = ({ blogPost }) => {
 					dangerouslySetInnerHTML={createMarkup(blogPost.text)}
 					style={{
 						display: '-webkit-box',
-						MozBoxOrient: 'vertical',
 						overflow: 'hidden',
 						WebkitLineClamp: '8',
 						WebkitBoxOrient: 'vertical',
+						MozBoxOrient: 'horizontal',
 						textOverflow: 'ellipsis',
 					}}
 				></Card.Text>
