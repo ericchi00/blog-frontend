@@ -33,7 +33,7 @@ const BlogPostCard = ({ blogPost }) => {
 						overflow: 'hidden',
 						WebkitLineClamp: '8',
 						WebkitBoxOrient: 'vertical',
-						MozBoxOrient: 'horizontal',
+						MozBoxOrient: 'vertical',
 						textOverflow: 'ellipsis',
 					}}
 				></Card.Text>
