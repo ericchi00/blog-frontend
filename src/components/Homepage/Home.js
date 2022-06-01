@@ -4,12 +4,12 @@ import Spinner from 'react-bootstrap/Spinner';
 import BlogPostCard from './BlogPostCard';
 
 const Home = () => {
-	document.title = "Eric's Blog";
 	const [loading, setLoading] = useState(true);
 	const [blogPost, setBlogPosts] = useState([]);
 
 	useEffect(() => {
 		getBlogPosts();
+		document.title = 'Generic Blog';
 	}, []);
 
 	const getBlogPosts = async () => {
