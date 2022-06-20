@@ -19,7 +19,6 @@ const ConfirmDelete = ({ show, onHide }) => {
 	const navigate = useNavigate();
 	const authHeader = useAuthHeader();
 	const handleDelete = async () => {
-		navigate('/');
 		const deleteBlogPost = await fetch(
 			`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}`,
 			{
@@ -29,6 +28,7 @@ const ConfirmDelete = ({ show, onHide }) => {
 				},
 			}
 		);
+		navigate('/');
 	};
 	return (
 		<Modal
