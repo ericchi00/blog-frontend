@@ -8,9 +8,52 @@ import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { useAuthUser, useIsAuthenticated, useAuthHeader } from 'react-auth-kit';
 import Comment from './Comment';
+import Modal from 'react-bootstrap/Modal';
 
 const createMarkup = (html) => {
 	return { __html: html };
+};
+
+const ConfirmDelete = ({ show, onHide }) => {
+	const { id } = useParams();
+	const navigate = useNavigate();
+	const authHeader = useAuthHeader();
+	const handleDelete = async () => {
+		navigate('/');
+		const deleteBlogPost = await fetch(
+			`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}`,
+			{
+				method: 'DELETE',
+				headers: {
+					Authorization: authHeader(),
+				},
+			}
+		);
+	};
+	return (
+		<Modal
+			show={show}
+			onHide={onHide}
+			size="lg"
+			aria-labelledby="contained-modal-title-vcenter"
+			centered
+		>
+			<Modal.Header closeButton>
+				<h4>Are you sure you want to delete?</h4>
+			</Modal.Header>
+			<Modal.Body
+				className="d-flex justify-content-center"
+				style={{ gap: '.5rem' }}
+			>
+				<Button variant="outline-danger" onClick={() => handleDelete()}>
+					Yes
+				</Button>
+				<Button variant="outline-secondary" onClick={() => onHide()}>
+					No
+				</Button>
+			</Modal.Body>
+		</Modal>
+	);
 };
 
 const BlogPost = () => {
@@ -19,6 +62,8 @@ const BlogPost = () => {
 	const [blogPostInfo, setBlogPostInfo] = useState('');
 	const [comment, setComment] = useState('');
 	const [newComment, setNewComment] = useState(null);
+
+	const [modalShow, setModalShow] = useState(false);
 
 	const { id } = useParams();
 	const navigate = useNavigate();
@@ -49,6 +94,18 @@ const BlogPost = () => {
 		setComment(value);
 	};
 
+	const handleEdit = async () => {
+		try {
+			navigate('/createpost', {
+				state: {
+					blogPostInfo,
+				},
+			});
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	const handleSubmit = async () => {
 		try {
 			document.getElementsByTagName('textarea')[0].value = '';
@@ -72,29 +129,29 @@ const BlogPost = () => {
 		}
 	};
 
-	const handleDelete = async (e) => {
-		navigate('/');
-		const deleteBlogPost = await fetch(
-			`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}`,
-			{
-				method: 'DELETE',
-				headers: {
-					Authorization: authHeader(),
-				},
-			}
-		);
-	};
-
 	return (
 		<Container fluid>
+			<ConfirmDelete show={modalShow} onHide={() => setModalShow(false)} />
 			{loading ? null : (
 				<Container style={{ maxWidth: '800px', marginTop: '3rem' }}>
 					{isAuthenticated() &&
-					auth().username === blogPostInfo.username.username ? (
-						<Button variant="outline-danger" onClick={(e) => handleDelete(e)}>
-							Delete
-						</Button>
-					) : null}
+						auth().username === blogPostInfo.username.username && (
+							<>
+								<Button
+									className="me-1"
+									variant="outline-danger"
+									onClick={() => setModalShow(true)}
+								>
+									Delete
+								</Button>
+								<Button
+									variant="outline-secondary"
+									onClick={() => handleEdit()}
+								>
+									Edit
+								</Button>
+							</>
+						)}
 					<h1 className="text-center">{blogPostInfo.title}</h1>
 					<span>Published by: {blogPostInfo.username.username}</span>
 					<p> {format(new Date(blogPostInfo.date), 'Pp')}</p>

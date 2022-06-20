@@ -22,9 +22,11 @@ const BlogPostCard = ({ blogPost }) => {
 						{blogPost.title}
 					</Card.Link>
 				</Card.Title>
-				<Card.Subtitle className="mb-2 text-muted">
-					<span>Published by: {blogPost.username.username}</span>
-					<p> {format(new Date(blogPost.date), 'Pp')}</p>
+				<Card.Subtitle className="mb-2 text-muted d-flex justify-content-between">
+					<div>
+						<span>Published by: {blogPost.username.username}</span>
+						<p> {format(new Date(blogPost.date), 'Pp')}</p>
+					</div>
 				</Card.Subtitle>
 				<Card.Text
 					dangerouslySetInnerHTML={createMarkup(blogPost.text)}

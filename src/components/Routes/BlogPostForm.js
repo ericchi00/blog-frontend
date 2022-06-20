@@ -1,22 +1,35 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAuthUser, useAuthHeader } from 'react-auth-kit';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import { Editor } from '@tinymce/tinymce-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const BlogPostForm = () => {
+	const location = useLocation();
 	const [error, setError] = useState(false);
 	const editorRef = useRef(null);
 	const [dirty, setDirty] = useState(false);
 	const [title, setTitle] = useState('');
+	const [initialValue, setInitialValue] = useState(
+		'<p>Enter your text here...</p>'
+	);
+	const [postID, setPostID] = useState(null);
 
 	const auth = useAuthUser();
 	const authHeader = useAuthHeader();
 
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (location.state) {
+			setTitle(location.state.blogPostInfo.title);
+			setInitialValue(location.state.blogPostInfo.text);
+			setPostID(location.state.blogPostInfo._id);
+		}
+	}, []);
 
 	const handleTitle = (e) => {
 		const { value } = e.target;
@@ -42,7 +55,7 @@ const BlogPostForm = () => {
 						'Content-Type': 'application/json',
 						Authorization: authHeader(),
 					},
-					body: JSON.stringify({ id, title, text }),
+					body: JSON.stringify({ id, title, text, postID }),
 				}
 			);
 			const blogPostID = await postMessage.json();
@@ -67,6 +80,7 @@ const BlogPostForm = () => {
 						</Form.Label>
 						<Form.Control
 							type="text"
+							value={title}
 							onChange={(e) => handleTitle(e)}
 							required
 						/>
@@ -80,7 +94,7 @@ const BlogPostForm = () => {
 							apiKey={process.env.REACT_APP_TINY_MCE}
 							onInit={(evt, editor) => (editorRef.current = editor)}
 							onDirty={() => setDirty(true)}
-							initialValue={'<p>Enter your text here...</p>'}
+							initialValue={initialValue}
 							init={{
 								height: 250,
 								menubar: false,
