@@ -27,4 +27,6 @@ Backend is API only
 
 Protected routes on backend & frontend. Can only access if authenticated.
 
+Users can edit and delete their own posts.
+
 [Live Demo](https://ericchi00.github.io/blog-frontend/)
