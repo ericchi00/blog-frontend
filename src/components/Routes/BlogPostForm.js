@@ -16,7 +16,7 @@ const BlogPostForm = () => {
 	const [initialValue, setInitialValue] = useState(
 		'<p>Enter your text here...</p>'
 	);
-	const [postID, setPostID] = useState(null);
+	const [postID, setPostID] = useState('doesnotexist');
 
 	const auth = useAuthUser();
 	const authHeader = useAuthHeader();
@@ -24,10 +24,12 @@ const BlogPostForm = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		document.title = 'Create a Post';
 		if (location.state) {
 			setTitle(location.state.blogPostInfo.title);
 			setInitialValue(location.state.blogPostInfo.text);
 			setPostID(location.state.blogPostInfo._id);
+			document.title = location.state.blogPostInfo.title;
 		}
 	}, []);
 
