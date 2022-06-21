@@ -28,7 +28,9 @@ const ConfirmDelete = ({ show, onHide }) => {
 				},
 			}
 		);
-		navigate('/');
+		if (deleteBlogPost.status === 200) {
+			navigate('/');
+		}
 	};
 	return (
 		<Modal
@@ -47,6 +49,7 @@ const ConfirmDelete = ({ show, onHide }) => {
 			>
 				<Button variant="outline-danger" onClick={() => handleDelete()}>
 					Yes
+					{}
 				</Button>
 				<Button variant="outline-secondary" onClick={() => onHide()}>
 					No
@@ -61,7 +64,7 @@ const BlogPost = () => {
 	const [loading, setLoading] = useState(true);
 	const [blogPostInfo, setBlogPostInfo] = useState('');
 	const [comment, setComment] = useState('');
-	const [newComment, setNewComment] = useState(null);
+	const [newComment, setNewComment] = useState(false);
 
 	const [modalShow, setModalShow] = useState(false);
 
@@ -109,7 +112,7 @@ const BlogPost = () => {
 	const handleSubmit = async () => {
 		try {
 			document.getElementsByTagName('textarea')[0].value = '';
-			setNewComment(true);
+			setNewComment(!newComment);
 			const postComment = await fetch(
 				`https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/api/blogposts/${id}/comments`,
 				{
