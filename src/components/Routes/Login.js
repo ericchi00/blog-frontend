@@ -16,6 +16,37 @@ const Login = () => {
 
 	const signIn = useSignIn();
 
+	const demoUser = async () => {
+		const loginPost = await fetch(
+			'https://infinite-ridge-47874.herokuapp.com/https://api-only-backend-blog-react.herokuapp.com/users/login',
+			{
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					username: process.env.REACT_APP_TEST_USERNAME,
+					password: process.env.REACT_APP_TEST_PASSWORD,
+				}),
+			}
+		);
+		if (loginPost.status === 500 || loginPost.status === 401) {
+			return setError(true);
+		}
+		const message = await loginPost.json();
+		if (
+			signIn({
+				token: message.token,
+				expiresIn: message.expiresIn,
+				tokenType: 'Bearer',
+				authState: message.authState,
+			})
+		) {
+			navigate('/');
+		}
+	};
+
 	return (
 		<>
 			<style type="text/css">
@@ -89,9 +120,17 @@ const Login = () => {
 								Incorrect username or password.
 							</Alert>
 						) : null}
-						<Button variant="primary" type="submit">
-							Login
-						</Button>
+						<div
+							className="d-flex justify-content-end"
+							style={{ gap: '.5rem' }}
+						>
+							<Button variant="primary" type="submit">
+								Login
+							</Button>
+							<Button variant="secondary" onClick={() => demoUser()}>
+								DEMO USER
+							</Button>
+						</div>
 					</Form>
 				</Formik>
 			</Container>
